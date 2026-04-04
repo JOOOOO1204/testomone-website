@@ -12,7 +12,10 @@
 </head>
 <body>
 
+
+<div class="full-page">
 <!-- HERO -->
+
 <div class="hero">
   <span class="cross-icon">✝</span>
   <h1>His <em>Story</em>, Your Testimony</h1>
@@ -20,7 +23,9 @@
   <div class="hero-verse">"And they overcame him by the blood of the Lamb and by the word of their testimony." — Revelation 12:11</div>
 </div>
 
+
 <!-- NAV -->
+ <div class="slide">
 <nav>
   <div class="nav-brand">His<span>Story</span></div>
   <div style="display:flex;gap:8px;align-items:center">
@@ -29,12 +34,7 @@
   </div>
 </nav>
 
-<div class="main">
-
-  <!-- DB SETUP NOTICE — remove this once Supabase is configured -->
-  <div class="db-banner" id="dbBanner">
-    <strong>⚙ Setup needed:</strong> Open <code>config.js</code> and add your <a href="https://supabase.com" target="_blank">Supabase</a> URL & anon key. Until then, testimonies are saved locally in your browser only. <a href="#setup-guide" onclick="document.getElementById('setupSection').style.display='block'">See setup guide ↓</a>
-  </div>
+<div class="mainn">
 
   <div class="layout">
     <!-- SIDEBAR -->
@@ -72,61 +72,6 @@
       <div id="feed"></div>
     </main>
   </div>
-
-  <!-- SETUP GUIDE (hidden until clicked) -->
-  <div id="setupSection" style="display:none;margin-top:3rem">
-    <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:2rem;border-top:3px solid var(--gold)">
-      <h2 style="font-family:'EB Garamond',serif;font-size:22px;margin-bottom:1rem">🗄 Database Setup Guide</h2>
-      <p style="color:var(--muted);font-size:14px;margin-bottom:1.5rem">Follow these steps to connect your site to a real database so testimonies are shared across all visitors.</p>
-      <div style="font-size:14px;line-height:1.9;color:var(--ink2)">
-        <p><strong>Step 1.</strong> Go to <a href="https://supabase.com" target="_blank" style="color:var(--blue-accent)">supabase.com</a> → create a free account → New Project.</p>
-        <p><strong>Step 2.</strong> In your project, go to <strong>SQL Editor</strong> and run this:</p>
-        <pre style="background:var(--parchment2);border:1px solid var(--border);border-radius:4px;padding:1rem;font-size:12px;overflow-x:auto;margin:10px 0;white-space:pre-wrap">-- Testimonies table
-create table testimonies (
-  id uuid primary key default gen_random_uuid(),
-  name text not null,
-  role text,
-  body text not null,
-  amens int default 0,
-  approved boolean default true,
-  created_at timestamptz default now()
-);
-
--- Tags table
-create table testimony_tags (
-  id uuid primary key default gen_random_uuid(),
-  testimony_id uuid references testimonies(id) on delete cascade,
-  tag text not null
-);
-
--- Comments table
-create table testimony_comments (
-  id uuid primary key default gen_random_uuid(),
-  testimony_id uuid references testimonies(id) on delete cascade,
-  author text not null,
-  body text not null,
-  created_at timestamptz default now()
-);
-
--- Allow public read & insert (no login required)
-alter table testimonies enable row level security;
-alter table testimony_tags enable row level security;
-alter table testimony_comments enable row level security;
-
-create policy "public read" on testimonies for select using (true);
-create policy "public insert" on testimonies for insert with check (true);
-create policy "public read tags" on testimony_tags for select using (true);
-create policy "public insert tags" on testimony_tags for insert with check (true);
-create policy "public read comments" on testimony_comments for select using (true);
-create policy "public insert comments" on testimony_comments for insert with check (true);</pre>
-        <p><strong>Step 3.</strong> Go to <strong>Project Settings → API</strong> and copy your <em>Project URL</em> and <em>anon public key</em>.</p>
-        <p><strong>Step 4.</strong> Open <code>config.js</code> in this site's folder and paste them in:</p>
-        <pre style="background:var(--parchment2);border:1px solid var(--border);border-radius:4px;padding:1rem;font-size:12px;overflow-x:auto;margin:10px 0">const SUPABASE_URL = 'https://your-project.supabase.co';
-const SUPABASE_KEY = 'your-anon-key-here';</pre>
-        <p><strong>Step 5.</strong> Push to GitHub and enable GitHub Pages (Settings → Pages → Deploy from main branch).</p>
-        <p style="margin-top:1rem;padding:10px 14px;background:var(--success-bg);border-radius:4px;color:var(--success);font-size:13px">✓ That's it! All testimonies will now be stored in Supabase and visible to everyone who visits your site.</p>
-      </div>
-    </div>
   </div>
 </div>
 

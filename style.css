@@ -25,17 +25,32 @@ body{
   font-family:'Lato',sans-serif;
   font-size:16px;
   line-height:1.75;
-  min-height:100vh;
+  min-height:100vh;  
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
 }
+
+.slide{
+
+    scroll-snap-align: start;
+    
+
+}
+
 
 /* HERO BANNER */
 .hero{
+  height: 100vh;
   background:var(--deep);
   color:white;
   text-align:center;
   padding:3.5rem 2rem 3rem;
   position:relative;
   overflow:hidden;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly; 
 }
 .hero::before{
   content:'';
@@ -44,7 +59,7 @@ body{
   pointer-events:none;
 }
 .cross-icon{
-  font-size:28px;
+  font-size:50px;
   letter-spacing:3px;
   color:var(--gold-mid);
   margin-bottom:0.75rem;
@@ -71,11 +86,13 @@ body{
   font-family:'EB Garamond',serif;
   font-style:italic;
   font-size:0.95rem;
-  color:rgba(255,255,255,0.45);
-  border-top:1px solid rgba(255,255,255,0.1);
-  padding-top:1.5rem;
+  color:rgba(255, 255, 255, 0.75);
+  /* border-top:1px solid rgba(255,255,255,0.1); */
+  /* padding-top:1.5rem; */
   max-width:440px;
   margin:0 auto;
+  border-style: solid;
+  border-radius: 10px;
 }
 
 /* NAV */
@@ -116,7 +133,14 @@ nav{
 .btn-sm{padding:5px 14px;font-size:13px}
 
 /* LAYOUT */
-.main{max-width:1080px;margin:0 auto;padding:2rem 1.5rem}
+.mainn{
+  max-width:100%;
+  height: 100vh;
+  margin:0 auto;
+  padding:2rem 1.5rem
+  scroll-snap-align:start;
+  
+}
 .layout{display:grid;grid-template-columns:240px 1fr;gap:2rem;align-items:start}
 
 /* SIDEBAR */
