@@ -578,7 +578,7 @@ alter table testimonies enable row level security;
 alter table testimony_tags enable row level security;
 alter table testimony_comments enable row level security;
 
-create policy "public read" on testimonies for select using (approved = true);
+create policy "public read" on testimonies for select using (true);
 create policy "public insert" on testimonies for insert with check (true);
 create policy "public read tags" on testimony_tags for select using (true);
 create policy "public insert tags" on testimony_tags for insert with check (true);
@@ -645,23 +645,33 @@ const SUPABASE_KEY = 'your-anon-key-here';</pre>
 
 <div class="toast" id="toast"></div>
 
-<!-- CONFIG — edit this file with your Supabase credentials -->
-<script src="config.js" onerror="console.log('config.js not found, using localStorage mode')"></script>
+<!-- Load Supabase JS first, always -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<!-- CONFIG — paste your Supabase URL and KEY into config.js -->
+<script src="config.js" onerror="window._configMissing=true"></script>
 <script>
 // ---- CONFIG CHECK ----
-const USE_SUPABASE = typeof SUPABASE_URL !== 'undefined' && SUPABASE_URL && !SUPABASE_URL.includes('your-project');
+// USE_SUPABASE is true only when config.js has real credentials
+const USE_SUPABASE = (
+  typeof SUPABASE_URL !== 'undefined' &&
+  typeof SUPABASE_KEY !== 'undefined' &&
+  SUPABASE_URL &&
+  SUPABASE_KEY &&
+  !SUPABASE_URL.includes('your-project') &&
+  !SUPABASE_KEY.includes('your-anon')
+);
 if(USE_SUPABASE) document.getElementById('dbBanner').style.display='none';
 
-// ---- SUPABASE CLIENT (loaded only if needed) ----
-let supabase = null;
+// ---- SUPABASE CLIENT ----
+// The UMD bundle exposes the global as `supabase` (lowercase), not `window.supabase`
+let db = null;
 if(USE_SUPABASE) {
-  const script = document.createElement('script');
-  script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-  script.onload = () => {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    loadTestimonies();
-  };
-  document.head.appendChild(script);
+  try {
+    // supabase-js v2 UMD exposes window.supabase = { createClient, ... }
+    db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  } catch(e) {
+    console.error('Supabase client init failed:', e);
+  }
 }
 
 // ---- DATA (localStorage fallback) ----
@@ -695,18 +705,37 @@ function initData(){
 }
 
 async function loadTestimonies(){
-  if(!USE_SUPABASE){initData();render();return}
+  if(!USE_SUPABASE || !db){initData();render();return}
   try{
-    const{data:t,error}=await supabase.from('testimonies').select(`*, testimony_tags(tag), testimony_comments(id,author,body,created_at)`).eq('approved',true).order('created_at',{ascending:false});
-    if(error)throw error;
-    testimonies=t.map(r=>({
-      id:r.id,name:r.name,role:r.role||'',body:r.body,verse:r.verse||'',
-      tags:r.testimony_tags.map(x=>x.tag),
-      comments:r.testimony_comments.map(c=>({author:c.author,text:c.body,ts:new Date(c.created_at).getTime()})),
-      ts:new Date(r.created_at).getTime(),amens:r.amens||0
+    const{data,error}=await db
+      .from('testimonies')
+      .select('*, testimony_tags(tag), testimony_comments(id,author,body,created_at)')
+      .order('created_at',{ascending:false});
+    if(error){
+      console.error('Supabase load error:', error.message, error.details, error.hint);
+      showToast('⚠ Could not load from database: '+error.message);
+      initData();render();return;
+    }
+    testimonies=data.map(r=>({
+      id:r.id,
+      name:r.name,
+      role:r.role||'',
+      body:r.body,
+      verse:r.verse||'',
+      tags:(r.testimony_tags||[]).map(x=>x.tag),
+      comments:(r.testimony_comments||[]).map(c=>({
+        author:c.author,
+        text:c.body,
+        ts:new Date(c.created_at).getTime()
+      })),
+      ts:new Date(r.created_at).getTime(),
+      amens:r.amens||0
     }));
     render();
-  }catch(e){console.error(e);initData();render();}
+  }catch(e){
+    console.error('loadTestimonies exception:',e);
+    initData();render();
+  }
 }
 
 // ---- MODAL ----
@@ -738,21 +767,51 @@ async function submitTestimony(){
   const body=document.getElementById('fBody').value.trim();
   if(!name){alert('Please enter your name.');return}
   if(body.length<20){alert('Please share a bit more — your testimony can encourage others greatly!');return}
+
+  const role=document.getElementById('fRole').value.trim()||null;
+  const verse=document.getElementById('fVerse').value.trim()||null;
+
   const t={
-    id:Date.now(),name,role:document.getElementById('fRole').value.trim(),
-    body,verse:document.getElementById('fVerse').value.trim(),
+    id:Date.now(),name,role:role||'',body,verse:verse||'',
     tags:[...formTags],ts:Date.now(),amens:0,comments:[]
   };
-  if(USE_SUPABASE&&supabase){
+
+  if(USE_SUPABASE && db){
     try{
-      const{data,error}=await supabase.from('testimonies').insert({name:t.name,role:t.role,body:t.body,verse:t.verse}).select().single();
-      if(error)throw error;
-      if(t.tags.length){await supabase.from('testimony_tags').insert(t.tags.map(tag=>({testimony_id:data.id,tag})))}
+      // Insert testimony row — approved:true makes it visible under the RLS policy
+      const{data,error}=await db
+        .from('testimonies')
+        .insert({name,role,body,verse,approved:true})
+        .select('id')
+        .single();
+
+      if(error){
+        console.error('Insert error:', error.message, error.details, error.hint);
+        alert('Could not save to database:\n'+error.message+'\n\nCheck your Supabase RLS policies and column names.');
+        return;
+      }
+
+      // Insert tags linked to the new testimony UUID
+      if(formTags.length){
+        const{error:tagErr}=await db
+          .from('testimony_tags')
+          .insert(formTags.map(tag=>({testimony_id:data.id,tag})));
+        if(tagErr) console.error('Tag insert error:',tagErr.message);
+      }
+
+      // Use the real UUID from Supabase as the local id too
       t.id=data.id;
-    }catch(e){console.error(e)}
+    }catch(e){
+      console.error('submitTestimony exception:',e);
+      alert('Unexpected error saving testimony. See console for details.');
+      return;
+    }
+  } else {
+    // localStorage-only mode
+    saveLocal([t,...loadLocal()]);
   }
+
   testimonies.unshift(t);
-  if(!USE_SUPABASE)saveLocal(testimonies);
   closeModal();render();
   showToast('✝ Your testimony has been published. May it bless many!');
 }
@@ -771,15 +830,19 @@ async function postComment(id){
   const c={author:a,text:b,ts:Date.now()};
   const t=testimonies.find(x=>x.id==id);
   if(!t)return;
-  if(USE_SUPABASE&&supabase){
-    try{await supabase.from('testimony_comments').insert({testimony_id:id,author:a,body:b})}catch(e){console.error(e)}
+  if(USE_SUPABASE&&db){
+    try{
+      const{error}=await db.from('testimony_comments').insert({testimony_id:id,author:a,body:b});
+      if(error){console.error('Comment error:',error.message);alert('Could not save comment:\n'+error.message);return}
+    }catch(e){console.error(e)}
+  } else {
+    saveLocal(testimonies);
   }
   t.comments.push(c);
-  if(!USE_SUPABASE)saveLocal(testimonies);
   document.getElementById('ca-'+id).value='';
   document.getElementById('cb-'+id).value='';
   document.getElementById('clist-'+id).innerHTML=renderComments(t.comments);
-  document.querySelector(`[data-cc="${id}"]`).textContent=`💬 ${t.comments.length}`;
+  document.querySelector(`[data-cc="${id}"]`).textContent=t.comments.length;
 }
 function renderComments(comments){
   return comments.map(c=>`<div class="comment"><div class="comment-author">${esc(c.author)}</div><div class="comment-text">${esc(c.text)}</div><div class="comment-date">${timeAgo(c.ts)}</div></div>`).join('');
@@ -791,10 +854,9 @@ async function toggleAmen(id){
   const k='amen_'+id,had=localStorage.getItem(k);
   if(had){t.amens=Math.max(0,t.amens-1);localStorage.removeItem(k)}
   else{t.amens++;localStorage.setItem(k,'1')}
-  if(USE_SUPABASE&&supabase){
-    try{await supabase.from('testimonies').update({amens:t.amens}).eq('id',id)}catch(e){console.error(e)}
+  if(USE_SUPABASE&&db){
+    try{await db.from('testimonies').update({amens:t.amens}).eq('id',id)}catch(e){console.error(e)}
   }
-  if(!USE_SUPABASE)saveLocal(testimonies);
   const btn=document.querySelector(`[data-amen="${id}"]`);
   if(btn){btn.textContent='🙏 Amen · '+t.amens;btn.classList.toggle('liked',!had)}
 }
@@ -891,7 +953,8 @@ function showToast(msg){
 }
 
 // ---- INIT ----
-if(!USE_SUPABASE){initData();render()}
+// loadTestimonies handles both Supabase and localStorage modes
+loadTestimonies();
 </script>
 </body>
 </html>
