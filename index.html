@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>His Story — Christian Testimonies</title>
+<meta name="description" content="Share how God has moved in your life. Read testimonies of faith, healing, and grace.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#B8901A;
+  --gold-light:#F5EDD4;
+  --gold-mid:#D4A832;
+  --parchment:#FAF7F0;
+  --parchment2:#F2EDE0;
+  --ink:#1C1810;
+  --ink2:#3D3828;
+  --muted:#7A7260;
+  --border:#DDD5BC;
+  --white:#FFFFFF;
+  --deep:#0E1A2B;
+  --blue-accent:#1A3A5C;
+  --tag-bg:#EBF0F7;
+  --tag-text:#1A3A5C;
+  --success:#2D6A4F;
+  --success-bg:#D8F3DC;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--parchment);
+  color:var(--ink);
+  font-family:'Lato',sans-serif;
+  font-size:16px;
+  line-height:1.75;
+  min-height:100vh;
+}
+
+/* HERO BANNER */
+.hero{
+  background:var(--deep);
+  color:white;
+  text-align:center;
+  padding:3.5rem 2rem 3rem;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(184,144,26,0.25) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cross-icon{
+  font-size:28px;
+  letter-spacing:3px;
+  color:var(--gold-mid);
+  margin-bottom:0.75rem;
+  display:block;
+}
+.hero h1{
+  font-family:'EB Garamond',serif;
+  font-size:clamp(2rem,6vw,3.5rem);
+  font-weight:500;
+  letter-spacing:-0.5px;
+  line-height:1.15;
+  margin-bottom:0.75rem;
+}
+.hero h1 em{color:var(--gold-mid);font-style:italic}
+.hero p{
+  font-size:1rem;
+  color:rgba(255,255,255,0.65);
+  max-width:480px;
+  margin:0 auto 2rem;
+  font-weight:300;
+  letter-spacing:0.2px;
+}
+.hero-verse{
+  font-family:'EB Garamond',serif;
+  font-style:italic;
+  font-size:0.95rem;
+  color:rgba(255,255,255,0.45);
+  border-top:1px solid rgba(255,255,255,0.1);
+  padding-top:1.5rem;
+  max-width:440px;
+  margin:0 auto;
+}
+
+/* NAV */
+nav{
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  padding:0 2rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:56px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.nav-brand{
+  font-family:'EB Garamond',serif;
+  font-size:20px;
+  font-weight:700;
+  color:var(--ink);
+}
+.nav-brand span{color:var(--gold)}
+.btn{
+  padding:8px 20px;
+  border-radius:4px;
+  font-family:'Lato',sans-serif;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.15s;
+  border:2px solid transparent;
+  letter-spacing:0.3px;
+}
+.btn-gold{background:var(--gold);color:white;border-color:var(--gold)}
+.btn-gold:hover{background:#9B780E}
+.btn-outline{background:transparent;color:var(--ink);border-color:var(--border)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.btn-sm{padding:5px 14px;font-size:13px}
+
+/* LAYOUT */
+.main{max-width:1080px;margin:0 auto;padding:2rem 1.5rem}
+.layout{display:grid;grid-template-columns:240px 1fr;gap:2rem;align-items:start}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:76px}
+.sidebar-block{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:1.25rem;
+  margin-bottom:1rem;
+}
+.sidebar-block:first-child{border-top:3px solid var(--gold)}
+.sidebar-label{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+.search-input{
+  width:100%;
+  padding:8px 12px;
+  border:1px solid var(--border);
+  border-radius:4px;
+  font-family:'Lato',sans-serif;
+  font-size:14px;
+  background:var(--parchment);
+  color:var(--ink);
+  outline:none;
+  transition:border-color 0.15s;
+}
+.search-input:focus{border-color:var(--gold)}
+.tag-cloud{display:flex;flex-wrap:wrap;gap:6px}
+.tag-pill{
+  padding:4px 10px;
+  border-radius:3px;
+  font-size:12px;
+  font-weight:700;
+  background:var(--tag-bg);
+  color:var(--tag-text);
+  cursor:pointer;
+  transition:all 0.12s;
+  border:1.5px solid transparent;
+  letter-spacing:0.2px;
+  user-select:none;
+}
+.tag-pill:hover{background:var(--tag-text);color:white}
+.tag-pill.active{background:var(--tag-text);color:white;border-color:var(--tag-text)}
+
+/* STATS */
+.stat-row{display:flex;gap:8px}
+.stat-box{
+  flex:1;text-align:center;
+  padding:10px 4px;
+  background:var(--parchment);
+  border-radius:4px;
+}
+.stat-num{
+  font-family:'EB Garamond',serif;
+  font-size:22px;
+  font-weight:700;
+  color:var(--gold);
+}
+.stat-lbl{font-size:10px;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;margin-top:2px}
+
+/* FEED */
+.feed-header{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  margin-bottom:1.25rem;
+}
+.feed-heading{
+  font-family:'EB Garamond',serif;
+  font-size:26px;
+  font-weight:500;
+  color:var(--ink2);
+}
+.sort-select{
+  padding:6px 10px;
+  border:1px solid var(--border);
+  border-radius:4px;
+  font-family:'Lato',sans-serif;
+  font-size:13px;
+  background:var(--white);
+  color:var(--ink);
+  cursor:pointer;
+  outline:none;
+}
+
+/* TESTIMONY CARD */
+.card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:1.75rem;
+  margin-bottom:1rem;
+  transition:box-shadow 0.15s;
+  position:relative;
+}
+.card:hover{box-shadow:0 4px 24px rgba(0,0,0,0.07)}
+.card-accent{
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:3px;
+  background:var(--gold);
+  border-radius:6px 0 0 6px;
+  opacity:0;
+  transition:opacity 0.2s;
+}
+.card:hover .card-accent{opacity:1}
+.quote-mark{
+  font-family:'EB Garamond',serif;
+  font-size:56px;
+  color:var(--gold-light);
+  line-height:0.6;
+  float:left;
+  margin-right:6px;
+  margin-top:10px;
+  user-select:none;
+}
+.card-body{
+  font-family:'EB Garamond',serif;
+  font-size:1.1rem;
+  line-height:1.8;
+  color:var(--ink2);
+  margin-bottom:1.25rem;
+  clear:left;
+}
+.card-meta-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  margin-bottom:1rem;
+}
+.avatar{
+  width:38px;height:38px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;
+  color:white;flex-shrink:0;
+}
+.card-name{font-weight:700;font-size:14px;color:var(--ink)}
+.card-role{font-size:12px;color:var(--muted);margin-top:1px}
+.card-date{font-size:11px;color:var(--muted);text-align:right;flex-shrink:0}
+.card-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:1rem}
+.card-tag{
+  padding:2px 8px;
+  border-radius:3px;
+  font-size:11px;
+  font-weight:700;
+  background:var(--tag-bg);
+  color:var(--tag-text);
+  cursor:pointer;
+  letter-spacing:0.2px;
+  transition:all 0.1s;
+}
+.card-tag:hover{background:var(--tag-text);color:white}
+.card-footer{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding-top:0.75rem;
+  border-top:1px solid var(--parchment2);
+}
+.card-action{
+  background:none;border:none;
+  font-family:'Lato',sans-serif;
+  font-size:13px;
+  color:var(--muted);
+  cursor:pointer;
+  display:flex;align-items:center;gap:5px;
+  padding:3px 0;
+  transition:color 0.12s;
+}
+.card-action:hover{color:var(--gold)}
+.card-action.liked{color:var(--gold);font-weight:700}
+.card-action.amen{font-style:italic}
+
+/* COMMENTS */
+.comments-wrap{margin-top:1rem;animation:fadeIn 0.2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.comment{
+  padding:10px 14px;
+  background:var(--parchment);
+  border-left:2px solid var(--gold-light);
+  border-radius:0 4px 4px 0;
+  margin-bottom:8px;
+  font-size:14px;
+}
+.comment-author{font-weight:700;font-size:13px;color:var(--ink);margin-bottom:2px}
+.comment-text{color:var(--ink2);line-height:1.6}
+.comment-date{font-size:11px;color:var(--muted);margin-top:4px}
+.comment-form{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.comment-row{display:flex;gap:8px}
+.comment-input{
+  flex:1;
+  padding:7px 11px;
+  border:1px solid var(--border);
+  border-radius:4px;
+  font-family:'Lato',sans-serif;
+  font-size:13px;
+  background:var(--white);
+  color:var(--ink);
+  outline:none;
+  transition:border-color 0.15s;
+}
+.comment-input:focus{border-color:var(--gold)}
+.comment-input.textarea{resize:vertical;min-height:60px;font-size:13px;line-height:1.5}
+
+/* MODAL */
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(14,26,43,0.7);
+  display:none;
+  align-items:center;justify-content:center;
+  z-index:200;padding:1rem;
+  backdrop-filter:blur(3px);
+}
+.overlay.open{display:flex}
+.modal{
+  background:var(--white);
+  border-radius:8px;
+  padding:2.5rem;
+  width:100%;max-width:560px;
+  max-height:92vh;overflow-y:auto;
+  border-top:4px solid var(--gold);
+}
+.modal-title{
+  font-family:'EB Garamond',serif;
+  font-size:26px;font-weight:700;
+  color:var(--ink);margin-bottom:0.25rem;
+}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:1.75rem}
+.form-group{margin-bottom:1.25rem}
+.form-label{
+  display:block;font-size:12px;font-weight:700;
+  letter-spacing:0.5px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:6px;
+}
+.form-input,.form-textarea{
+  width:100%;
+  padding:10px 13px;
+  border:1px solid var(--border);
+  border-radius:4px;
+  font-family:'Lato',sans-serif;
+  font-size:14px;
+  background:var(--parchment);
+  color:var(--ink);
+  outline:none;
+  transition:border-color 0.15s;
+}
+.form-input:focus,.form-textarea:focus{border-color:var(--gold);background:var(--white)}
+.form-textarea{resize:vertical;min-height:110px;line-height:1.65}
+.star-row{display:flex;gap:8px;margin-top:4px}
+.star-btn{
+  font-size:26px;background:none;border:none;
+  cursor:pointer;color:#DDD5BC;line-height:1;
+  transition:color 0.1s,transform 0.1s;
+}
+.star-btn:hover,.star-btn.on{color:#D4A832}
+.star-btn:hover{transform:scale(1.15)}
+.tag-input-row{display:flex;gap:8px}
+.tags-preview{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag-remove{
+  padding:3px 9px;border-radius:3px;
+  font-size:12px;font-weight:700;
+  background:var(--tag-bg);color:var(--tag-text);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;gap:4px;
+  transition:background 0.1s;
+}
+.tag-remove:hover{background:#fde8e8;color:#a32d2d}
+.suggested-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.sug-tag{
+  padding:3px 8px;
+  border-radius:3px;font-size:11px;font-weight:700;
+  background:var(--parchment2);color:var(--muted);
+  border:1px dashed var(--border);cursor:pointer;
+  transition:all 0.1s;
+}
+.sug-tag:hover{background:var(--tag-bg);color:var(--tag-text);border-style:solid}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:1.75rem;padding-top:1.25rem;border-top:1px solid var(--border)}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:2rem;right:2rem;
+  background:var(--deep);color:white;
+  border-left:4px solid var(--gold);
+  border-radius:4px;
+  padding:14px 20px;
+  font-size:14px;
+  z-index:300;
+  opacity:0;
+  transform:translateY(8px);
+  transition:all 0.25s;
+  max-width:340px;
+}
+.toast.show{opacity:1;transform:none}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:3rem 1rem;color:var(--muted)}
+.empty-icon{font-family:'EB Garamond',serif;font-size:48px;color:var(--gold-light);margin-bottom:1rem}
+.empty p{font-size:15px}
+
+/* FILTER BAR */
+.filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
+.filter-lbl{font-size:13px;color:var(--muted)}
+.filter-clear{
+  background:none;border:1px solid var(--border);
+  border-radius:20px;padding:2px 10px;
+  font-size:12px;cursor:pointer;color:var(--muted);
+  transition:all 0.1s;
+}
+.filter-clear:hover{color:var(--gold);border-color:var(--gold)}
+
+/* PENDING NOTICE */
+.pending-notice{
+  background:var(--gold-light);
+  border:1px solid #D4A832;
+  border-radius:4px;
+  padding:10px 14px;
+  font-size:13px;
+  color:var(--ink2);
+  margin-bottom:1.25rem;
+}
+
+/* DB NOTICE */
+.db-banner{
+  background:var(--parchment2);
+  border:1px dashed var(--border);
+  border-radius:6px;
+  padding:14px 18px;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:1.5rem;
+  text-align:center;
+}
+.db-banner a{color:var(--blue-accent);text-decoration:underline}
+.db-banner strong{color:var(--ink2)}
+
+@media(max-width:680px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static}
+  .modal{padding:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="cross-icon">✝</span>
+  <h1>His <em>Story</em>, Your Testimony</h1>
+  <p>A place to share how God has moved, healed, and transformed your life.</p>
+  <div class="hero-verse">"And they overcame him by the blood of the Lamb and by the word of their testimony." — Revelation 12:11</div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">His<span>Story</span></div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <button class="btn btn-outline" onclick="openModal()" style="display:none" id="navBtn">+ Share Testimony</button>
+    <button class="btn btn-gold" onclick="openModal()">+ Share Testimony</button>
+  </div>
+</nav>
+
+<div class="main">
+
+  <!-- DB SETUP NOTICE — remove this once Supabase is configured -->
+  <div class="db-banner" id="dbBanner">
+    <strong>⚙ Setup needed:</strong> Open <code>config.js</code> and add your <a href="https://supabase.com" target="_blank">Supabase</a> URL & anon key. Until then, testimonies are saved locally in your browser only. <a href="#setup-guide" onclick="document.getElementById('setupSection').style.display='block'">See setup guide ↓</a>
+  </div>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-block">
+        <div class="sidebar-label">Search</div>
+        <input class="search-input" type="text" id="searchInput" placeholder="Search testimonies…" oninput="renderFeed()">
+      </div>
+      <div class="sidebar-block">
+        <div class="sidebar-label">Overview</div>
+        <div class="stat-row">
+          <div class="stat-box"><div class="stat-num" id="statTotal">0</div><div class="stat-lbl">Stories</div></div>
+          <div class="stat-box"><div class="stat-num" id="statAmens">0</div><div class="stat-lbl">Amens</div></div>
+          <div class="stat-box"><div class="stat-num" id="statComments">0</div><div class="stat-lbl">Replies</div></div>
+        </div>
+      </div>
+      <div class="sidebar-block">
+        <div class="sidebar-label">Filter by topic</div>
+        <div class="tag-cloud" id="tagCloud"></div>
+      </div>
+    </aside>
+
+    <!-- FEED -->
+    <main>
+      <div class="feed-header">
+        <h2 class="feed-heading">Testimonies</h2>
+        <select class="sort-select" id="sortSelect" onchange="renderFeed()">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="amens">Most Amens</option>
+        </select>
+      </div>
+      <div class="filter-bar" id="filterBar" style="display:none"></div>
+      <div id="pendingNotice"></div>
+      <div id="feed"></div>
+    </main>
+  </div>
+
+  <!-- SETUP GUIDE (hidden until clicked) -->
+  <div id="setupSection" style="display:none;margin-top:3rem">
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:2rem;border-top:3px solid var(--gold)">
+      <h2 style="font-family:'EB Garamond',serif;font-size:22px;margin-bottom:1rem">🗄 Database Setup Guide</h2>
+      <p style="color:var(--muted);font-size:14px;margin-bottom:1.5rem">Follow these steps to connect your site to a real database so testimonies are shared across all visitors.</p>
+      <div style="font-size:14px;line-height:1.9;color:var(--ink2)">
+        <p><strong>Step 1.</strong> Go to <a href="https://supabase.com" target="_blank" style="color:var(--blue-accent)">supabase.com</a> → create a free account → New Project.</p>
+        <p><strong>Step 2.</strong> In your project, go to <strong>SQL Editor</strong> and run this:</p>
+        <pre style="background:var(--parchment2);border:1px solid var(--border);border-radius:4px;padding:1rem;font-size:12px;overflow-x:auto;margin:10px 0;white-space:pre-wrap">-- Testimonies table
+create table testimonies (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  role text,
+  body text not null,
+  amens int default 0,
+  approved boolean default true,
+  created_at timestamptz default now()
+);
+
+-- Tags table
+create table testimony_tags (
+  id uuid primary key default gen_random_uuid(),
+  testimony_id uuid references testimonies(id) on delete cascade,
+  tag text not null
+);
+
+-- Comments table
+create table testimony_comments (
+  id uuid primary key default gen_random_uuid(),
+  testimony_id uuid references testimonies(id) on delete cascade,
+  author text not null,
+  body text not null,
+  created_at timestamptz default now()
+);
+
+-- Allow public read & insert (no login required)
+alter table testimonies enable row level security;
+alter table testimony_tags enable row level security;
+alter table testimony_comments enable row level security;
+
+create policy "public read" on testimonies for select using (approved = true);
+create policy "public insert" on testimonies for insert with check (true);
+create policy "public read tags" on testimony_tags for select using (true);
+create policy "public insert tags" on testimony_tags for insert with check (true);
+create policy "public read comments" on testimony_comments for select using (true);
+create policy "public insert comments" on testimony_comments for insert with check (true);</pre>
+        <p><strong>Step 3.</strong> Go to <strong>Project Settings → API</strong> and copy your <em>Project URL</em> and <em>anon public key</em>.</p>
+        <p><strong>Step 4.</strong> Open <code>config.js</code> in this site's folder and paste them in:</p>
+        <pre style="background:var(--parchment2);border:1px solid var(--border);border-radius:4px;padding:1rem;font-size:12px;overflow-x:auto;margin:10px 0">const SUPABASE_URL = 'https://your-project.supabase.co';
+const SUPABASE_KEY = 'your-anon-key-here';</pre>
+        <p><strong>Step 5.</strong> Push to GitHub and enable GitHub Pages (Settings → Pages → Deploy from main branch).</p>
+        <p style="margin-top:1rem;padding:10px 14px;background:var(--success-bg);border-radius:4px;color:var(--success);font-size:13px">✓ That's it! All testimonies will now be stored in Supabase and visible to everyone who visits your site.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WRITE MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-title">Share Your Testimony</div>
+    <div class="modal-sub">How has God moved in your life? Your story can encourage someone today.</div>
+
+    <div class="form-group">
+      <label class="form-label">Your Name</label>
+      <input class="form-input" id="fName" placeholder="e.g. Sarah Johnson" type="text">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Church / Location (optional)</label>
+      <input class="form-input" id="fRole" placeholder="e.g. Grace Community Church, Mumbai" type="text">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Your Testimony</label>
+      <textarea class="form-textarea" id="fBody" placeholder="Share what God has done in your life…"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Scripture Reference (optional)</label>
+      <input class="form-input" id="fVerse" placeholder="e.g. Philippians 4:13" type="text">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Topics / Tags</label>
+      <div class="tag-input-row">
+        <input class="form-input" id="fTagInput" placeholder="e.g. healing" type="text" onkeydown="if(event.key==='Enter'){event.preventDefault();addTag()}">
+        <button class="btn btn-outline btn-sm" onclick="addTag()">Add</button>
+      </div>
+      <div class="suggested-tags">
+        <span style="font-size:11px;color:var(--muted);align-self:center">Suggested:</span>
+        <span class="sug-tag" onclick="addTagVal('healing')">healing</span>
+        <span class="sug-tag" onclick="addTagVal('salvation')">salvation</span>
+        <span class="sug-tag" onclick="addTagVal('prayer')">prayer</span>
+        <span class="sug-tag" onclick="addTagVal('provision')">provision</span>
+        <span class="sug-tag" onclick="addTagVal('faith')">faith</span>
+        <span class="sug-tag" onclick="addTagVal('marriage')">marriage</span>
+        <span class="sug-tag" onclick="addTagVal('deliverance')">deliverance</span>
+        <span class="sug-tag" onclick="addTagVal('youth')">youth</span>
+      </div>
+      <div class="tags-preview" id="tagsPreview"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-gold" onclick="submitTestimony()">Publish Testimony</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- CONFIG — edit this file with your Supabase credentials -->
+<script src="config.js" onerror="console.log('config.js not found, using localStorage mode')"></script>
+<script>
+// ---- CONFIG CHECK ----
+const USE_SUPABASE = typeof SUPABASE_URL !== 'undefined' && SUPABASE_URL && !SUPABASE_URL.includes('your-project');
+if(USE_SUPABASE) document.getElementById('dbBanner').style.display='none';
+
+// ---- SUPABASE CLIENT (loaded only if needed) ----
+let supabase = null;
+if(USE_SUPABASE) {
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+  script.onload = () => {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    loadTestimonies();
+  };
+  document.head.appendChild(script);
+}
+
+// ---- DATA (localStorage fallback) ----
+const COLORS=['#1A3A5C','#2D6A4F','#B8901A','#7B3F00','#3A3080','#8B1A1A','#1A5C3A','#5C3A1A'];
+function avatarColor(name){let h=0;for(let c of name)h=(h*31+c.charCodeAt(0))%COLORS.length;return COLORS[h]}
+function initials(name){return name.split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)||'✝'}
+function timeAgo(ts){
+  const d=(Date.now()-ts)/1000;
+  if(d<60)return'just now';if(d<3600)return Math.floor(d/60)+'m ago';
+  if(d<86400)return Math.floor(d/3600)+'h ago';if(d<604800)return Math.floor(d/86400)+'d ago';
+  return new Date(ts).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+function loadLocal(){try{return JSON.parse(localStorage.getItem('hisstory_t')||'[]')}catch{return[]}}
+function saveLocal(arr){localStorage.setItem('hisstory_t',JSON.stringify(arr))}
+
+let testimonies = [];
+let activeTag = null;
+let formTags = [];
+
+const SEED = [
+  {id:1,name:'Evelyn Osei',role:'Redeemed Church, Accra',body:'I had been battling infertility for seven years. Every doctor said it was impossible. But God. After joining a prayer group and trusting His word, I conceived naturally. My daughter is now four years old and she fills our home with joy. What the enemy said was barren, God declared fruitful.',verse:'Psalm 113:9',tags:['healing','prayer','family'],ts:Date.now()-1296000000,amens:24,comments:[{author:'Pastor James',text:'Glory to God! Thank you for sharing this, Evelyn.',ts:Date.now()-500000}]},
+  {id:2,name:'Daniel Fernandez',role:'Living Hope Church, Goa',body:'I was deeply in addiction for over a decade — alcohol, broken relationships, lost jobs. The night I hit rock bottom I cried out to God for the first time in years. He met me right there on that floor. Three years clean now, restored marriage, and I volunteer in our church recovery ministry every Friday.',verse:'2 Corinthians 5:17',tags:['deliverance','salvation','restoration'],ts:Date.now()-864000000,amens:31,comments:[]},
+  {id:3,name:'Grace Mutua',role:'Nairobi Baptist, Kenya',body:'God provided for my university fees in the most miraculous way. I had prayed and trusted, submitted my application believing. Three days before the deadline, an anonymous letter arrived with the exact amount needed — not a rupee more, not a rupee less. He is Jehovah Jireh.',verse:'Philippians 4:19',tags:['provision','faith','youth'],ts:Date.now()-432000000,amens:18,comments:[{author:'Rachel T.',text:'This gave me so much hope for my own situation, thank you!',ts:Date.now()-200000}]},
+];
+
+function initData(){
+  testimonies = loadLocal();
+  if(!testimonies.length){testimonies=JSON.parse(JSON.stringify(SEED));saveLocal(testimonies);}
+}
+
+async function loadTestimonies(){
+  if(!USE_SUPABASE){initData();render();return}
+  try{
+    const{data:t,error}=await supabase.from('testimonies').select(`*, testimony_tags(tag), testimony_comments(id,author,body,created_at)`).eq('approved',true).order('created_at',{ascending:false});
+    if(error)throw error;
+    testimonies=t.map(r=>({
+      id:r.id,name:r.name,role:r.role||'',body:r.body,verse:r.verse||'',
+      tags:r.testimony_tags.map(x=>x.tag),
+      comments:r.testimony_comments.map(c=>({author:c.author,text:c.body,ts:new Date(c.created_at).getTime()})),
+      ts:new Date(r.created_at).getTime(),amens:r.amens||0
+    }));
+    render();
+  }catch(e){console.error(e);initData();render();}
+}
+
+// ---- MODAL ----
+function openModal(){
+  document.getElementById('fName').value='';
+  document.getElementById('fRole').value='';
+  document.getElementById('fBody').value='';
+  document.getElementById('fVerse').value='';
+  document.getElementById('fTagInput').value='';
+  formTags=[];renderFormTags();
+  document.getElementById('overlay').classList.add('open');
+}
+function closeModal(){document.getElementById('overlay').classList.remove('open')}
+document.getElementById('overlay').addEventListener('click',function(e){if(e.target===this)closeModal()})
+
+function addTagVal(v){if(!formTags.includes(v)&&formTags.length<7){formTags.push(v);renderFormTags()}}
+function addTag(){
+  const v=document.getElementById('fTagInput').value.trim().toLowerCase().replace(/[^a-z0-9\-]/g,'');
+  if(v&&!formTags.includes(v)&&formTags.length<7){formTags.push(v);renderFormTags()}
+  document.getElementById('fTagInput').value='';
+}
+function removeTag(t){formTags=formTags.filter(x=>x!==t);renderFormTags()}
+function renderFormTags(){
+  document.getElementById('tagsPreview').innerHTML=formTags.map(t=>`<button class="tag-remove" onclick="removeTag('${t}')">${t} ✕</button>`).join('');
+}
+
+async function submitTestimony(){
+  const name=document.getElementById('fName').value.trim();
+  const body=document.getElementById('fBody').value.trim();
+  if(!name){alert('Please enter your name.');return}
+  if(body.length<20){alert('Please share a bit more — your testimony can encourage others greatly!');return}
+  const t={
+    id:Date.now(),name,role:document.getElementById('fRole').value.trim(),
+    body,verse:document.getElementById('fVerse').value.trim(),
+    tags:[...formTags],ts:Date.now(),amens:0,comments:[]
+  };
+  if(USE_SUPABASE&&supabase){
+    try{
+      const{data,error}=await supabase.from('testimonies').insert({name:t.name,role:t.role,body:t.body,verse:t.verse}).select().single();
+      if(error)throw error;
+      if(t.tags.length){await supabase.from('testimony_tags').insert(t.tags.map(tag=>({testimony_id:data.id,tag})))}
+      t.id=data.id;
+    }catch(e){console.error(e)}
+  }
+  testimonies.unshift(t);
+  if(!USE_SUPABASE)saveLocal(testimonies);
+  closeModal();render();
+  showToast('✝ Your testimony has been published. May it bless many!');
+}
+
+// ---- COMMENTS ----
+function toggleComments(id){
+  const el=document.getElementById('cw-'+id);
+  if(!el)return;
+  const vis=el.style.display==='none'||!el.style.display;
+  el.style.display=vis?'block':'none';
+}
+async function postComment(id){
+  const a=document.getElementById('ca-'+id).value.trim();
+  const b=document.getElementById('cb-'+id).value.trim();
+  if(!a||!b)return;
+  const c={author:a,text:b,ts:Date.now()};
+  const t=testimonies.find(x=>x.id==id);
+  if(!t)return;
+  if(USE_SUPABASE&&supabase){
+    try{await supabase.from('testimony_comments').insert({testimony_id:id,author:a,body:b})}catch(e){console.error(e)}
+  }
+  t.comments.push(c);
+  if(!USE_SUPABASE)saveLocal(testimonies);
+  document.getElementById('ca-'+id).value='';
+  document.getElementById('cb-'+id).value='';
+  document.getElementById('clist-'+id).innerHTML=renderComments(t.comments);
+  document.querySelector(`[data-cc="${id}"]`).textContent=`💬 ${t.comments.length}`;
+}
+function renderComments(comments){
+  return comments.map(c=>`<div class="comment"><div class="comment-author">${esc(c.author)}</div><div class="comment-text">${esc(c.text)}</div><div class="comment-date">${timeAgo(c.ts)}</div></div>`).join('');
+}
+
+// ---- AMENS ----
+async function toggleAmen(id){
+  const t=testimonies.find(x=>x.id==id);if(!t)return;
+  const k='amen_'+id,had=localStorage.getItem(k);
+  if(had){t.amens=Math.max(0,t.amens-1);localStorage.removeItem(k)}
+  else{t.amens++;localStorage.setItem(k,'1')}
+  if(USE_SUPABASE&&supabase){
+    try{await supabase.from('testimonies').update({amens:t.amens}).eq('id',id)}catch(e){console.error(e)}
+  }
+  if(!USE_SUPABASE)saveLocal(testimonies);
+  const btn=document.querySelector(`[data-amen="${id}"]`);
+  if(btn){btn.textContent='🙏 Amen · '+t.amens;btn.classList.toggle('liked',!had)}
+}
+
+// ---- TAG FILTER ----
+function filterByTag(tag){activeTag=activeTag===tag?null:tag;renderFeed();renderTagCloud()}
+
+// ---- RENDER ----
+function render(){renderFeed();renderStats();renderTagCloud()}
+
+function renderFeed(){
+  const q=document.getElementById('searchInput').value.trim().toLowerCase();
+  const sort=document.getElementById('sortSelect').value;
+  const bar=document.getElementById('filterBar');
+  let list=testimonies.filter(t=>{
+    const mt=!activeTag||t.tags.includes(activeTag);
+    const mq=!q||t.name.toLowerCase().includes(q)||t.body.toLowerCase().includes(q)||t.tags.some(tg=>tg.includes(q))||(t.role||'').toLowerCase().includes(q);
+    return mt&&mq;
+  });
+  if(sort==='oldest')list.sort((a,b)=>a.ts-b.ts);
+  else if(sort==='amens')list.sort((a,b)=>b.amens-a.amens);
+  else list.sort((a,b)=>b.ts-a.ts);
+
+  if(activeTag||q){
+    bar.style.display='flex';
+    bar.innerHTML=`<span class="filter-lbl">Filtering:</span>`
+      +(activeTag?`<span class="tag-pill active">${activeTag}</span>`:'')
+      +(q?`<span class="tag-pill" style="background:var(--gold-light);color:var(--gold)">"${esc(q)}"</span>`:'')
+      +`<button class="filter-clear" onclick="clearFilters()">Clear</button>`;
+  } else bar.style.display='none';
+
+  const feed=document.getElementById('feed');
+  if(!list.length){
+    feed.innerHTML=`<div class="empty"><div class="empty-icon">✝</div><p>No testimonies found. Be the first to share yours.</p></div>`;
+    return;
+  }
+  feed.innerHTML=list.map(t=>{
+    const amenBg=localStorage.getItem('amen_'+t.id);
+    return`<div class="card">
+  <div class="card-accent"></div>
+  <div class="card-body">
+    <span class="quote-mark">"</span>${esc(t.body)}"
+    ${t.verse?`<div style="font-size:13px;color:var(--gold);margin-top:8px;font-family:'EB Garamond',serif;font-style:italic">— ${esc(t.verse)}</div>`:''}
+  </div>
+  <div class="card-meta-row">
+    <div style="display:flex;align-items:center;gap:10px;flex:1">
+      <div class="avatar" style="background:${avatarColor(t.name)}">${initials(t.name)}</div>
+      <div><div class="card-name">${esc(t.name)}</div>${t.role?`<div class="card-role">${esc(t.role)}</div>`:''}</div>
+    </div>
+    <div class="card-date">${timeAgo(t.ts)}</div>
+  </div>
+  ${t.tags.length?`<div class="card-tags">${t.tags.map(tg=>`<span class="card-tag" onclick="filterByTag('${tg}')">${tg}</span>`).join('')}</div>`:''}
+  <div class="card-footer">
+    <button class="card-action amen ${amenBg?'liked':''}" data-amen="${t.id}" onclick="toggleAmen(${JSON.stringify(t.id)})">🙏 Amen · ${t.amens}</button>
+    <button class="card-action" onclick="toggleComments(${JSON.stringify(t.id)})">💬 <span data-cc="${t.id}">${t.comments.length}</span></button>
+  </div>
+  <div id="cw-${t.id}" style="display:none">
+    <div class="comments-wrap">
+      <div id="clist-${t.id}">${renderComments(t.comments)}</div>
+      <div class="comment-form">
+        <div class="comment-row">
+          <input class="comment-input" id="ca-${t.id}" placeholder="Your name" style="max-width:140px">
+          <input class="comment-input" id="cb-${t.id}" placeholder="Encourage or respond…" onkeydown="if(event.key==='Enter')postComment(${JSON.stringify(t.id)})">
+          <button class="btn btn-sm btn-gold" onclick="postComment(${JSON.stringify(t.id)})">Post</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;
+  }).join('');
+}
+
+function clearFilters(){activeTag=null;document.getElementById('searchInput').value='';render()}
+
+function renderStats(){
+  document.getElementById('statTotal').textContent=testimonies.length;
+  document.getElementById('statAmens').textContent=testimonies.reduce((s,t)=>s+t.amens,0);
+  document.getElementById('statComments').textContent=testimonies.reduce((s,t)=>s+t.comments.length,0);
+}
+
+function renderTagCloud(){
+  const counts={};
+  testimonies.forEach(t=>t.tags.forEach(tg=>counts[tg]=(counts[tg]||0)+1));
+  const tags=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('tagCloud').innerHTML=tags.length
+    ?tags.map(([t,n])=>`<span class="tag-pill ${activeTag===t?'active':''}" onclick="filterByTag('${t}')">${t} <span style="opacity:.55">${n}</span></span>`).join('')
+    :'<span style="font-size:12px;color:var(--muted)">No tags yet</span>';
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),4000);
+}
+
+// ---- INIT ----
+if(!USE_SUPABASE){initData();render()}
+</script>
+</body>
+</html>
