@@ -107,6 +107,7 @@ nav{
   position:sticky;
   top:0;
   z-index:100;
+  scroll-snap-align:start;
 }
 .nav-brand{
   font-family:'EB Garamond',serif;
@@ -133,12 +134,12 @@ nav{
 .btn-sm{padding:5px 14px;font-size:13px}
 
 /* LAYOUT */
-.mainn{
+.main{
   max-width:100%;
   height: 100vh;
   margin:0 auto;
   padding:2rem 1.5rem
-  scroll-snap-align:start;
+  
   
 }
 .layout{display:grid;grid-template-columns:240px 1fr;gap:2rem;align-items:start}
