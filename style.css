@@ -355,15 +355,19 @@ nav{
 
 /* MODAL */
 .overlay{
-  position:fixed;inset:0;
+  position:fixed;
+  inset:0;
   background:rgba(14,26,43,0.7);
   display:none;
   align-items:center;justify-content:center;
-  z-index:200;padding:1rem;
+  z-index:200;
+  padding:1rem;
   backdrop-filter:blur(3px);
 }
 .overlay.open{display:flex}
+.REC-overlay.open{display:flex}
 .modal{
+  position: absolute;
   background:var(--white);
   border-radius:8px;
   padding:2.5rem;
@@ -378,6 +382,87 @@ nav{
 }
 .modal-sub{font-size:13px;color:var(--muted);margin-bottom:1.75rem}
 .form-group{margin-bottom:1.25rem}
+
+/* AUDIO OVERLAYS */
+.material-icons{
+  font-size: 100px;
+}
+.MIC_ICON{
+  
+  background-color:var(--gold-mid);
+  border-color: #D4A832;
+  border-style: solid               ;
+  border-radius: 50%;
+  position: relative;
+  display: block;
+
+  
+}
+
+.MIC_ICON.recording{
+  animation: puls 0.6s ease-in alternate-reverse forwards infinite;
+
+
+}
+
+@keyframes puls{
+  0%{
+    border-width: 0px;
+    /* opacity: 0; */
+
+  }
+
+  100%{
+    border-width: 25px;
+    /* opacity: 100; */
+
+    
+  }
+}
+
+#playback{
+  margin-bottom: 1rem;
+  box-shadow: 0px 0px 1rem rgba(0,0,0,0.02);
+  border-radius: 999px;
+  
+}
+.REC-overlay{
+  position: absolute;
+  display:none;
+  height: 400px;
+  width: 500px;
+  padding: 4rem 3rem;
+  z-index:300;
+  flex-direction: column;
+  background-color: #a32d2d;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+}
+.record-box:hover {
+  background: #9B780E;
+  
+}
+.record-box{
+  padding: 2px 5px;
+  background: var(--gold);
+  color: white;
+  border-color: var(--gold);
+  text-transform:none;
+  
+}
+.record-promt{
+  display: grid; 
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:6px;
+  gap: 5px;
+  
+  
+}
 .form-label{
   display:block;font-size:12px;font-weight:700;
   letter-spacing:0.5px;text-transform:uppercase;

@@ -8,6 +8,14 @@ var testimonies = [];
 var activeTag   = null;
 var formTags    = [];
 var db          = null;
+let can_record = false;
+let is_recorcing =false;
+let recorder = null;
+let chunks = [];
+let file;
+const playback = document.querySelector('.playback'); 
+const mic_btn = document.querySelector('#mic'); 
+const audioUpload = document.querySelector('.audio-upload'); 
 
 // ---- CONFIG CHECK ----
 var USE_SUPABASE = (
@@ -142,6 +150,95 @@ async function loadTestimonies() {
   }
 }
 
+// Audio overlay
+mic_btn.addEventListener('click', ToggleMIC());
+
+function audioRoverlay(){
+
+  document.getElementById('REC-overlay').classList.add('open')
+  SetupAudio()
+}
+function audioRoverlayrem(){
+  
+  document.getElementById('REC-overlay').classList.remove('open')
+}
+
+
+
+function SetupAudio(){
+  console.log("Audio setup");
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices
+    .getUserMedia({audio:true})
+    .then(setupStream)
+    .catch(err => {
+      console.error(err)
+    });
+  }
+}
+
+function setupStream(stream) {
+  recorder = new MediaRecorder(stream);
+  recorder.ondataavailable = e => {
+    chunks.push(e.data);
+  }
+
+  recorder.onstop = e => {
+    let blob = new Blob(chunks, {type: "audio/opus; codecs=opus"});
+    console.log(blob)
+    chunks = [];
+    file = blob
+    const audioURL = window.URL.createObjectURL(blob);
+
+    playback.src = audioURL;
+    console.log(audioURL )
+  }
+
+  can_record = true;
+  // return blob;
+}
+
+function ToggleMIC(){
+  
+
+  if (!can_record) return;
+  is_recorcing = !is_recorcing
+
+  if (is_recorcing) {
+    recorder.start();
+    console.log("Audio REC");
+    mic_btn.classList.add("recording");
+  } 
+  else{
+      recorder.stop();
+      console.log("Audio stop");
+      mic_btn.classList.remove("recording");
+
+  }
+
+
+}
+
+const UploadAudio = async ()  => {
+
+  const filePath = `audio-${Date.now()}.opus`;
+
+  const {error} = await db.storage.from("audio").upload(filePath , file , { contentType: 'audio/opus'})
+  console.log(file)
+  
+  if (error) {
+    console.error("ERROR UPLOAD AUDIO ", error.message);
+  }
+
+  const {data} = await db.storage.from("audio").getPublicUrl(filePath)
+  return data.getPublicUrl;
+
+};
+audioUpload.addEventListener('click', UploadAudio);
+
+
+
+
 // ---- MODAL ----
 function openModal() {
   document.getElementById('fName').value  = '';
@@ -199,6 +296,7 @@ async function submitTestimony() {
 
   var role  = document.getElementById('fRole').value.trim()  || null;
   var verse = document.getElementById('fVerse').value.trim() || null;
+  var URL = ""
 
   var t = {
     id: Date.now(), name: name, role: role || '',

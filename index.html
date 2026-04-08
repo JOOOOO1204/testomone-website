@@ -7,6 +7,8 @@
 <meta name="description" content="Share how God has moved in your life. Read testimonies of faith, healing, and grace.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 <link rel="stylesheet" href="style.css">
 
 </head>
@@ -71,12 +73,28 @@
       <div id="pendingNotice"></div>
       <div id="feed"></div>
     </main>
-  </div>
+  </div>                    
   </div>
 </div>
 
 <!-- WRITE MODAL -->
 <div class="overlay" id="overlay">
+
+
+<div class="REC-overlay" id="REC-overlay">
+  
+  
+  <button onclick="ToggleMIC()" class="MIC_ICON" id="mic"><span class="material-icons">mic</span></button>
+  <audio class="playback" controls ></audio>
+  <div>
+  <button class="audio-upload" onclick="UploadAudio()">audio upload</button>
+  <button class="Cancel-audio" onclick="audioRoverlayrem()">Cancel</button>
+  </div>
+
+
+</div>
+
+
   <div class="modal">
     <div class="modal-title">Share Your Testimony</div>
     <div class="modal-sub">How has God moved in your life? Your story can encourage someone today.</div>
@@ -90,9 +108,12 @@
       <input class="form-input" id="fRole" placeholder="e.g. Grace Community Church, Mumbai" type="text">
     </div>
     <div class="form-group">
-      <label class="form-label">Your Testimony</label>
+      <div class="record-promt">
+      <label class="form-label">Your Testimony</label><butoon class="btn record-box" onclick="audioRoverlay()">Record your voice insted</button>
+      
+      </div>
       <textarea class="form-textarea" id="fBody" placeholder="Share what God has done in your life…"></textarea>
-    </div>
+  </div>
     <div class="form-group">
       <label class="form-label">Scripture Reference (optional)</label>
       <input class="form-input" id="fVerse" placeholder="e.g. Philippians 4:13" type="text">
@@ -130,5 +151,6 @@
 <!-- CONFIG — paste your Supabase URL and KEY into config.js -->
 <script src="config.js" onerror="window._configMissing=true"></script>
 <script src="script.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </body>
 </html>
