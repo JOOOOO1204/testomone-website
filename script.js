@@ -13,6 +13,7 @@ let is_recorcing =false;
 let recorder = null;
 let chunks = [];
 let file;
+let AudioID;
 const playback = document.querySelector('.playback'); 
 const mic_btn = document.querySelector('#mic'); 
 const audioUpload = document.querySelector('.audio-upload'); 
@@ -82,36 +83,36 @@ function saveLocal(arr) {
 }
 
 // ---- SEED DATA ----
-var SEED = [
-  {
-    id: 1, name: 'Evelyn Osei', role: 'Redeemed Church, Accra',
-    body: 'I had been battling infertility for seven years. Every doctor said it was impossible. But God. After joining a prayer group and trusting His word, I conceived naturally. My daughter is now four years old and she fills our home with joy. What the enemy said was barren, God declared fruitful.',
-    verse: 'Psalm 113:9', tags: ['healing','prayer','family'],
-    ts: Date.now() - 1296000000, amens: 24,
-    comments: [{author:'Pastor James', text:'Glory to God! Thank you for sharing this, Evelyn.', ts: Date.now() - 500000}]
-  },
-  {
-    id: 2, name: 'Daniel Fernandez', role: 'Living Hope Church, Goa',
-    body: 'I was deeply in addiction for over a decade — alcohol, broken relationships, lost jobs. The night I hit rock bottom I cried out to God for the first time in years. He met me right there on that floor. Three years clean now, restored marriage, and I volunteer in our church recovery ministry every Friday.',
-    verse: '2 Corinthians 5:17', tags: ['deliverance','salvation','restoration'],
-    ts: Date.now() - 864000000, amens: 31, comments: []
-  },
-  {
-    id: 3, name: 'Grace Mutua', role: 'Nairobi Baptist, Kenya',
-    body: 'God provided for my university fees in the most miraculous way. I had prayed and trusted, submitted my application believing. Three days before the deadline, an anonymous letter arrived with the exact amount needed. He is Jehovah Jireh.',
-    verse: 'Philippians 4:19', tags: ['provision','faith','youth'],
-    ts: Date.now() - 432000000, amens: 18,
-    comments: [{author:'Rachel T.', text:'This gave me so much hope for my own situation, thank you!', ts: Date.now() - 200000}]
-  }
-];
+// var SEED = [
+//   {
+//     id: 1, name: 'Evelyn Osei', role: 'Redeemed Church, Accra',
+//     body: 'I had been battling infertility for seven years. Every doctor said it was impossible. But God. After joining a prayer group and trusting His word, I conceived naturally. My daughter is now four years old and she fills our home with joy. What the enemy said was barren, God declared fruitful.',
+//     verse: 'Psalm 113:9', tags: ['healing','prayer','family'],
+//     ts: Date.now() - 1296000000, amens: 24,
+//     comments: [{author:'Pastor James', text:'Glory to God! Thank you for sharing this, Evelyn.', ts: Date.now() - 500000}]
+//   },
+//   {
+//     id: 2, name: 'Daniel Fernandez', role: 'Living Hope Church, Goa',
+//     body: 'I was deeply in addiction for over a decade — alcohol, broken relationships, lost jobs. The night I hit rock bottom I cried out to God for the first time in years. He met me right there on that floor. Three years clean now, restored marriage, and I volunteer in our church recovery ministry every Friday.',
+//     verse: '2 Corinthians 5:17', tags: ['deliverance','salvation','restoration'],
+//     ts: Date.now() - 864000000, amens: 31, comments: []
+//   },
+//   {
+//     id: 3, name: 'Grace Mutua', role: 'Nairobi Baptist, Kenya',
+//     body: 'God provided for my university fees in the most miraculous way. I had prayed and trusted, submitted my application believing. Three days before the deadline, an anonymous letter arrived with the exact amount needed. He is Jehovah Jireh.',
+//     verse: 'Philippians 4:19', tags: ['provision','faith','youth'],
+//     ts: Date.now() - 432000000, amens: 18,
+//     comments: [{author:'Rachel T.', text:'This gave me so much hope for my own situation, thank you!', ts: Date.now() - 200000}]
+//   }
+// ];
 
-function initData() {
-  testimonies = loadLocal();
-  if (!testimonies.length) {
-    testimonies = JSON.parse(JSON.stringify(SEED));
-    saveLocal(testimonies);
-  }
-}
+// function initData() {
+//   testimonies = loadLocal();
+//   if (!testimonies.length) {
+//     testimonies = JSON.parse(JSON.stringify(SEED));
+//     saveLocal(testimonies);
+//   }
+// }
 
 // ---- LOAD FROM SUPABASE ----
 async function loadTestimonies() {
@@ -140,7 +141,9 @@ async function loadTestimonies() {
           return { author: c.author, text: c.body, ts: new Date(c.created_at).getTime() };
         }),
         ts:    new Date(r.created_at).getTime(),
-        amens: r.amens || 0
+        amens: r.amens || 0,
+        Audio : r.Audio
+
       };
     });
     render();
@@ -191,7 +194,7 @@ function setupStream(stream) {
     const audioURL = window.URL.createObjectURL(blob);
 
     playback.src = audioURL;
-    console.log(audioURL )
+    // console.log("audioURL:",audioURL )
   }
 
   can_record = true;
@@ -221,17 +224,20 @@ function ToggleMIC(){
 
 const UploadAudio = async ()  => {
 
-  const filePath = `audio-${Date.now()}.opus`;
+  AudioID = `audio-${Date.now()}.opus`;
 
-  const {error} = await db.storage.from("audio").upload(filePath , file , { contentType: 'audio/opus'})
+  const {error} = await db.storage.from("audio").upload(AudioID , file , { contentType: 'audio/opus'})
   console.log(file)
   
   if (error) {
     console.error("ERROR UPLOAD AUDIO ", error.message);
   }
 
-  const {data} = await db.storage.from("audio").getPublicUrl(filePath)
-  return data.getPublicUrl;
+  const {data} = await db.storage.from("audio").getPublicUrl(AudioID)
+  // data.getPublicUrl = let PPublicUrl
+  // AudioID = `https://sghtuzfcdmpqdvhiqtmd.supabase.co/storage/v1/object/public/audio/${AudioID}`
+  // console.log("PublicURL:",AudioID)
+  document.getElementById('REC-overlay').classList.remove('open')
 
 };
 audioUpload.addEventListener('click', UploadAudio);
@@ -292,23 +298,30 @@ async function submitTestimony() {
   var name = document.getElementById('fName').value.trim();
   var body = document.getElementById('fBody').value.trim();
   if (!name) { alert('Please enter your name.'); return; }
-  if (body.length < 20) { alert('Please share a bit more — your testimony can encourage others greatly!'); return; }
+  if (body.length < 1) { alert('Please share a bit more — your testimony can encourage others greatly!'); return; }
 
   var role  = document.getElementById('fRole').value.trim()  || null;
   var verse = document.getElementById('fVerse').value.trim() || null;
-  var URL = ""
+  console.log(AudioID)
 
   var t = {
-    id: Date.now(), name: name, role: role || '',
-    body: body, verse: verse || '',
-    tags: formTags.slice(), ts: Date.now(), amens: 0, comments: []
+    id: Date.now(), 
+    name: name, 
+    role: role || '',
+    body: body, 
+    verse: verse || '',
+    tags: formTags.slice(), 
+    ts: Date.now(), 
+    amens: 0, 
+    comments: [],
+    Audio :AudioID
   };
 
   if (USE_SUPABASE && db) {
     try {
       var res = await db
         .from('testimonies')
-        .insert({ name: name, role: role, body: body, verse: verse, approved: true })
+        .insert({ name: name, role: role, body: body, verse: verse, approved: true , Audio :AudioID })
         .select('id')
         .single();
 
@@ -417,7 +430,7 @@ function clearFilters() {
 }
 
 // ---- RENDER ALL ----
-function render() { renderFeed(); renderStats(); renderTagCloud(); }
+function render() { renderFeed(); renderStats(); renderTagCloud(); renderAudio() }
 
 function renderFeed() {
   var q    = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -466,6 +479,7 @@ function renderFeed() {
       +     '<div class="avatar" style="background:' + avatarColor(t.name) + '">' + initials(t.name) + '</div>'
       +     '<div><div class="card-name">' + esc(t.name) + '</div>'
       +     (t.role ? '<div class="card-role">' + esc(t.role) + '</div>' : '') + '</div>'
+      +         '<div>'+ renderAudio(t.Audio) + '</div>'
       +   '</div>'
       +   '<div class="card-date">' + timeAgo(t.ts) + '</div>'
       + '</div>'
@@ -488,6 +502,13 @@ function renderFeed() {
       + '</div>'
       + '</div>';
   }).join('');
+}
+
+function renderAudio(audiolink) {
+  if (audiolink) {
+    return  '<audio  src="https://sghtuzfcdmpqdvhiqtmd.supabase.co/storage/v1/object/public/audio/'+audiolink+'" controls></audio>'}
+    else return ""
+
 }
 
 function renderStats() {
